@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <stdbool.h>
 #include <stdlib.h>
+#include <string.h>
+#include <ctype.h>
 
 // Macro for a loop that iterates from 0 to n-1
 #define FOR(i, n) for (int i = 0; i < n; i++)
@@ -23,15 +25,50 @@ struct scoreInfoStructure
     int max;                // Maximum score of all evaluated students
     int min;                // Minimum score of all evaluated students
 };
+struct checkInputIsIntStructure
+{
+    int value;
+    bool isInt;
+};
+struct checkInputIsIntStructure checkInputIsInt()
+{
+    struct checkInputIsIntStructure checkInput;
+    checkInput.value = 0;
+    checkInput.isInt = true;
+    char input[100];
+    char c;
+    COUNT;
+    while ((c = getchar()) != EOF)
+    {
+        if (isspace(c)) {
+            break;
+        }
+        input[count++] = c;
+    }
+    input[count] = '\0';
+    FOR(i, strlen(input))
+    {
+        if (input[0] == '-') continue;
+        if (input[i] < '0' || input[i] > '9')
+        {
+            checkInput.isInt = false;
+            return checkInput;
+        }
+    }
+    checkInput.value = (int)atoi(input);
+    return checkInput;
+}
 // Function to input number of students, returns false if input is invalid
 bool inputNumberOfStudent(int* n)
 {
+    struct checkInputIsIntStructure checkInput;
     printf("n = ");
-    bool sc = scanf("%d", n);
-    if ( *n < 1 || *n > 9 || !sc){
-        sc ? \
-        printf("ERROR: invalid number of students (%d)\n", *n) : \
-        printf("ERROR: invalid number of students (%s)\n", "NOT NUMBER");
+    checkInput = checkInputIsInt();
+    *n = checkInput.value;
+    if ( *n < 1 || *n > 9){
+        checkInput.isInt ? \
+        printf("ERROR: invalid number of students (%d)\n", *n): \
+        printf("ERROR: invalid number of students (%s)\n", "NOT INTEGER");
         return false;
     }
     return true;
@@ -39,27 +76,30 @@ bool inputNumberOfStudent(int* n)
 // Function to input scores into an array, returns false if invalid scores are inputted
 bool inputScoresArr(int scoresArray[], int size)
 {
+    struct checkInputIsIntStructure checkInput;
     bool isErrorScoresInput = false;
+    bool isNotInteger = false;
     int errorScores[size];
-    bool sc;
     COUNT;
     printf("scores = ");
     FOR(i, size)
     {
-        sc = scanf("%d", &scoresArray[i]);
-        if (scoresArray[i] < -1 || scoresArray[i] > 100 || !sc)
+        checkInput = checkInputIsInt();
+        scoresArray[i] = checkInput.value;
+        if (!checkInput.isInt) isNotInteger = true;
+        if (scoresArray[i] < -1 || scoresArray[i] > 100)
         {
             isErrorScoresInput = true;
             errorScores[count] = scoresArray[i];
             count++;
         }
     }
-    if (isErrorScoresInput)
+    if (isErrorScoresInput || isNotInteger)
     {
         printf("ERROR: invalid scores (");
-        if (!sc)
+        if (isNotInteger)
         {
-            printf("%s", "NOT NUMBER)\n");
+            printf("%s", "NOT INTEGER)\n");
             return false;
         }
         FOR(i, count)
