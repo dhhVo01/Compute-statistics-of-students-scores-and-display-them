@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include <stdbool.h>
-#include <string.h>
 #include <stdlib.h>
 
 // Macro for a loop that iterates from 0 to n-1
@@ -24,23 +23,27 @@ struct scoreInfoStructure
 bool inputNumberOfStudent(int* n)
 {
     printf("n = ");
-    scanf("%d", n);
-    if ( *n < 1 || *n > 9 ){
-        printf("ERROR: invalid number of students (%d)\n", *n);
+    bool sc = scanf("%d", n);
+    if ( *n < 1 || *n > 9 || !sc){
+        sc ? \
+        printf("ERROR: invalid number of students (%d)\n", *n) : \
+        printf("ERROR: invalid number of students (%s)\n", "NOT NUMBER");
         return false;
     }
     return true;
 }
 // Function to input scores into an array, returns false if invalid scores are inputted
-bool inputScoresArr(int scoresArray[], int size){
+bool inputScoresArr(int scoresArray[], int size)
+{
     bool isErrorScoresInput = false;
     int errorScores[size];
+    bool sc;
     COUNT;
     printf("scores = ");
     FOR(i, size)
     {
-        scanf("%d", &scoresArray[i]);
-        if (scoresArray[i] < -1 || scoresArray[i] > 100)
+        sc = scanf("%d", &scoresArray[i]);
+        if (scoresArray[i] < -1 || scoresArray[i] > 100 || !sc)
         {
             isErrorScoresInput = true;
             errorScores[count] = scoresArray[i];
@@ -50,6 +53,11 @@ bool inputScoresArr(int scoresArray[], int size){
     if (isErrorScoresInput)
     {
         printf("ERROR: invalid scores (");
+        if (!sc)
+        {
+            printf("%s", "NOT NUMBER)\n");
+            return false;
+        }
         FOR(i, count)
         {
             printf("%d", errorScores[i]);
@@ -101,6 +109,7 @@ float average(int scoresArray[], int size)
         sum += scoresArray[i];
     return (float)sum/size;
 }
+// Function to find the maximum score of all evaluated students
 int max(int scoresArray[], int size)
 {
     if (size == 0) return 0;
