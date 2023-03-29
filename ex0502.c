@@ -48,7 +48,7 @@ struct checkInputIsIntStructure checkInputIsInt()
     input[count] = '\0';
     FOR(i, strlen(input))
     {
-        if (input[0] == '-') continue;
+        if (input[i] == '-' && i == 0) continue;
         if (input[i] < '0' || input[i] > '9')
         {
             checkInput.isInt = false;
