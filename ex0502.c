@@ -8,6 +8,10 @@
 #define CHECK_INPUT(func) if (!func) return 1;
 // Macro for counting number of items in an array
 #define COUNT int count = 0;
+// Macro for returns the minimum value between A and B.
+#define CHECK_MIN(A, B) A < B ? A : B
+// Macro for returns the maximum value between A and B.
+#define CHECK_MAX(A, B) A > B ? A : B
 
 // Struct to hold various score information
 struct scoreInfoStructure
@@ -72,8 +76,7 @@ bool inputScoresArr(int scoresArray[], int size)
 // Function to check if a score has been evaluated (i.e. not equal to -1)
 bool checkNotEvaluated(int score)
 {
-    if (score == -1) return false;
-    return true;
+    return score != -1;
 }
 // Function to create a sub-array of evaluated scores from the main scores array
 void createSubScoreArrayEvaluated(int subScoreArray[], int scoresArray[], int sizeScoresArray, int *subScoresArraySize)
@@ -115,12 +118,8 @@ int max(int scoresArray[], int size)
     if (size == 0) return 0;
     int maxScore = scoresArray[0];
     FOR(i, size - 1)
-    {
-        if (scoresArray[i+1] > maxScore)
-            maxScore = scoresArray[i+1];
-    }
+        maxScore = CHECK_MAX(maxScore, scoresArray[i+1]);
     return maxScore;
-
 }
 // Function to find the minimum score of all evaluated students
 int min(int scoresArray[], int size)
@@ -128,10 +127,7 @@ int min(int scoresArray[], int size)
     if (size == 0) return 0;
     int minScore = scoresArray[0];
     FOR(i, size - 1)
-    {
-        if (scoresArray[i+1] < minScore)
-            minScore = scoresArray[i+1];
-    }
+        minScore = CHECK_MIN(minScore, scoresArray[i+1]);
     return minScore;
 }
 // This function prints out the score information of the students
