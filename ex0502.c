@@ -136,7 +136,7 @@ bool inputScoresArr(int scoresArray[], int size)
 // Function to check if a score has been evaluated (i.e. not equal to -1)
 bool checkNotEvaluated(int score)
 {
-    return score != EOF;
+    return score != MIN_SCORE;
 }
 // Function to create a sub-array of evaluated scores from the main scores array
 void createSubScoreArrayEvaluated(int subScoreArray[], int scoresArray[], int sizeScoresArray, int *subScoresArraySize)
