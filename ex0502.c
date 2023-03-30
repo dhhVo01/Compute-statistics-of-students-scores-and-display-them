@@ -7,7 +7,9 @@
 // Macro for a loop that iterates from 0 to n-1
 #define FOR(i, n) for (int i = 0; i < n; i++)
 // Macro for checking input functions and returning 1 if invalid
-#define CHECK_INPUT(func) if (!func) return 1;
+#define CHECK_INPUT(func) \
+    if (!func)            \
+        return 1;
 // Macro for counting number of items in an array
 #define COUNT int count = 0;
 // Macro for returns the minimum value between A and B.
@@ -18,55 +20,61 @@
 // Struct to hold various score information
 struct scoreInfoStructure
 {
-    int students;           // Number of students
-    int passed;             // Number of students who passed (score >= 60)
-    int percentPassed;      // Percentage of students who passed
-    float avg;              // Average score of all evaluated students
-    int max;                // Maximum score of all evaluated students
-    int min;                // Minimum score of all evaluated students
+    int students;      // Number of students
+    int passed;        // Number of students who passed (score >= 60)
+    int percentPassed; // Percentage of students who passed
+    float avg;         // Average score of all evaluated students
+    int max;           // Maximum score of all evaluated students
+    int min;           // Minimum score of all evaluated students
 };
+// Structure that holds the result of checking whether input is an integer or not.
 struct checkInputIsIntStructure
 {
-    int value;
-    bool isInt;
+    int value;  // The integer value of the input (if input is an integer)
+    bool isInt; // A flag indicating whether the input is an integer or not
 };
+// Function that checks if the input from user is an integer.
+// Returns a struct containing the result of the check.
 struct checkInputIsIntStructure checkInputIsInt()
 {
     struct checkInputIsIntStructure checkInput;
-    checkInput.value = 0;
-    checkInput.isInt = true;
+    checkInput.value = 0;    // Set the initial value to zero
+    checkInput.isInt = true; // Set the initial flag value to true
     char input[100];
     char c;
     COUNT;
+    // Loop through the input character by character
     while ((c = getchar()) != EOF)
     {
-        if (!isspace(c)) input[count++] = c;            
-        if (count > 0 && isspace(c)) break;
+        if (!isspace(c))
+            input[count++] = c; // If the character is not whitespace, add it to the input array
+        if (count > 0 && isspace(c))
+            break; // If we have read at least one non-whitespace character and we encounter whitespace, break the loop
     }
-    input[count] = '\0';
-    FOR(i, strlen(input))
+    input[count] = '\0';  // Add null terminator to the end of the input string
+    FOR(i, strlen(input)) // Loop through the input string
     {
-        if (input[i] == '-' && i == 0) continue;
-        if (input[i] < '0' || input[i] > '9')
+        if (input[i] == '-' && i == 0)
+            continue;                         // If the first character is a minus sign, skip it (negative numbers are allowed)
+        if (input[i] < '0' || input[i] > '9') // If a character is not a digit
         {
-            checkInput.isInt = false;
-            return checkInput;
+            checkInput.isInt = false; // Set the flag to false
+            return checkInput;        // Return the result
         }
     }
-    checkInput.value = (int)atoi(input);
-    return checkInput;
+    checkInput.value = (int)atoi(input); // Convert the input string to an integer and store it in the struct
+    return checkInput;                   // Return the result
 }
 // Function to input number of students, returns false if input is invalid
-bool inputNumberOfStudent(int* n)
+bool inputNumberOfStudent(int *n)
 {
     struct checkInputIsIntStructure checkInput;
     printf("n = ");
     checkInput = checkInputIsInt();
     *n = checkInput.value;
-    if ( *n < 1 || *n > 9){
-        checkInput.isInt ? \
-        printf("ERROR: invalid number of students (%d)\n", *n): \
-        printf("ERROR: invalid number of students (%s)\n", "NOT INTEGER");
+    if (*n < 1 || *n > 9)
+    {
+        checkInput.isInt ? printf("ERROR: invalid number of students (%d)\n", *n) : printf("ERROR: invalid number of students (%s)\n", "NOT INTEGER");
         return false;
     }
     return true;
@@ -107,11 +115,12 @@ bool inputScoresArr(int scoresArray[], int size)
         FOR(i, count)
         {
             printf("%d", errorScores[i]);
-            if (i == count - 1) continue;
+            if (i == count - 1)
+                continue;
             printf(", ");
         }
         printf(")\n");
-        return false;   
+        return false;
     }
     return true;
 }
@@ -126,7 +135,7 @@ void createSubScoreArrayEvaluated(int subScoreArray[], int scoresArray[], int si
     COUNT;
     FOR(i, sizeScoresArray)
     {
-        if(checkNotEvaluated(scoresArray[i]))
+        if (checkNotEvaluated(scoresArray[i]))
         {
             subScoreArray[count] = scoresArray[i];
             count++;
@@ -140,7 +149,7 @@ int checkPassedStudent(int scores[], int size)
     COUNT;
     FOR(i, size)
     {
-        if (scores[i] >= 60 )
+        if (scores[i] >= 60)
             count++;
     }
     return count;
@@ -148,28 +157,31 @@ int checkPassedStudent(int scores[], int size)
 // Function to calculate the average score of all evaluated students
 float average(int scoresArray[], int size)
 {
-    if (size == 0) return 0;
+    if (size == 0)
+        return 0;
     int sum = 0;
     FOR(i, size)
-        sum += scoresArray[i];
-    return (float)sum/size;
+    sum += scoresArray[i];
+    return (float)sum / size;
 }
 // Function to find the maximum score of all evaluated students
 int max(int scoresArray[], int size)
 {
-    if (size == 0) return 0;
+    if (size == 0)
+        return 0;
     int maxScore = scoresArray[0];
     FOR(i, size - 1)
-        maxScore = CHECK_MAX(maxScore, scoresArray[i+1]);
+    maxScore = CHECK_MAX(maxScore, scoresArray[i + 1]);
     return maxScore;
 }
 // Function to find the minimum score of all evaluated students
 int min(int scoresArray[], int size)
 {
-    if (size == 0) return 0;
+    if (size == 0)
+        return 0;
     int minScore = scoresArray[0];
     FOR(i, size - 1)
-        minScore = CHECK_MIN(minScore, scoresArray[i+1]);
+    minScore = CHECK_MIN(minScore, scoresArray[i + 1]);
     return minScore;
 }
 // This function prints out the score information of the students
@@ -184,7 +196,8 @@ void printfScoreInfo(struct scoreInfoStructure scoreInfo)
     printf("==========================\n");
 }
 
-int main(void){
+int main(void)
+{
 
     int numberOfStudent;
     // Prompt user to enter the number of students and check the input validity.
