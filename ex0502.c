@@ -4,6 +4,13 @@
 #include <string.h>
 #include <ctype.h>
 
+#define MIN_STUDENT_NUMBER 1
+#define MAX_STUDENT_NUMBER 9
+#define MIN_SCORE -1
+#define MAX_SCORE 100
+#define PASS_SCORE 60
+#define MAX_INPUT_LENGTH 100
+
 // Macro for a loop that iterates from 0 to n-1
 #define FOR(i, n) for (int i = 0; i < n; i++)
 // Macro for checking input functions and returning 1 if invalid
@@ -40,7 +47,7 @@ struct checkInputIsIntStructure checkInputIsInt()
     struct checkInputIsIntStructure checkInput;
     checkInput.value = 0;    // Set the initial value to zero
     checkInput.isInt = true; // Set the initial flag value to true
-    char input[100];
+    char input[MAX_INPUT_LENGTH];
     char c;
     COUNT;
     // Loop through the input character by character
@@ -72,9 +79,11 @@ bool inputNumberOfStudent(int *n)
     printf("n = ");
     checkInput = checkInputIsInt();
     *n = checkInput.value;
-    if (*n < 1 || *n > 9)
+    if (*n < MIN_STUDENT_NUMBER || *n > MAX_STUDENT_NUMBER)
     {
-        checkInput.isInt ? printf("ERROR: invalid number of students (%d)\n", *n) : printf("ERROR: invalid number of students (%s)\n", "NOT INTEGER");
+        checkInput.isInt ? \
+        printf("ERROR: invalid number of students (%d)\n", *n) : \
+        printf("ERROR: invalid number of students (%s)\n", "NOT INTEGER");
         return false;
     }
     return true;
@@ -97,7 +106,7 @@ bool inputScoresArr(int scoresArray[], int size)
             continue;
         }
         scoresArray[i] = checkInput.value;
-        if (scoresArray[i] < -1 || scoresArray[i] > 100)
+        if (scoresArray[i] < MIN_SCORE || scoresArray[i] > MAX_SCORE)
         {
             isErrorScoresInput = true;
             errorScores[count] = scoresArray[i];
@@ -149,7 +158,7 @@ int checkPassedStudent(int scores[], int size)
     COUNT;
     FOR(i, size)
     {
-        if (scores[i] >= 60)
+        if (scores[i] >= PASS_SCORE)
             count++;
     }
     return count;
@@ -198,7 +207,6 @@ void printfScoreInfo(struct scoreInfoStructure scoreInfo)
 
 int main(void)
 {
-
     int numberOfStudent;
     // Prompt user to enter the number of students and check the input validity.
     CHECK_INPUT(inputNumberOfStudent(&numberOfStudent));
