@@ -40,10 +40,8 @@ struct checkInputIsIntStructure checkInputIsInt()
     COUNT;
     while ((c = getchar()) != EOF)
     {
-        if (isspace(c)) {
-            break;
-        }
-        input[count++] = c;
+        if (!isspace(c)) input[count++] = c;            
+        if (count > 0 && isspace(c)) break;
     }
     input[count] = '\0';
     FOR(i, strlen(input))
@@ -85,8 +83,12 @@ bool inputScoresArr(int scoresArray[], int size)
     FOR(i, size)
     {
         checkInput = checkInputIsInt();
+        if (!checkInput.isInt)
+        {
+            isNotInteger = true;
+            continue;
+        }
         scoresArray[i] = checkInput.value;
-        if (!checkInput.isInt) isNotInteger = true;
         if (scoresArray[i] < -1 || scoresArray[i] > 100)
         {
             isErrorScoresInput = true;
@@ -116,7 +118,7 @@ bool inputScoresArr(int scoresArray[], int size)
 // Function to check if a score has been evaluated (i.e. not equal to -1)
 bool checkNotEvaluated(int score)
 {
-    return score != -1;
+    return score != EOF;
 }
 // Function to create a sub-array of evaluated scores from the main scores array
 void createSubScoreArrayEvaluated(int subScoreArray[], int scoresArray[], int sizeScoresArray, int *subScoresArraySize)
