@@ -16,7 +16,7 @@
 // Macro for checking input functions and returning 1 if invalid
 #define CHECK_INPUT(func) \
     if (!func)            \
-        return 1;
+        return 0;
 // Macro for counting number of items in an array
 #define COUNT int count = 0;
 // Macro for returns the minimum value between A and B.
@@ -109,8 +109,7 @@ bool inputScoresArr(int scoresArray[], int size)
         if (scoresArray[i] < MIN_SCORE || scoresArray[i] > MAX_SCORE)
         {
             isErrorScoresInput = true;
-            errorScores[count] = scoresArray[i];
-            count++;
+            errorScores[count++] = scoresArray[i];
         }
     }
     if (isErrorScoresInput || isNotInteger)
@@ -145,10 +144,7 @@ void createSubScoreArrayEvaluated(int subScoreArray[], int scoresArray[], int si
     FOR(i, sizeScoresArray)
     {
         if (checkNotEvaluated(scoresArray[i]))
-        {
-            subScoreArray[count] = scoresArray[i];
-            count++;
-        }
+            subScoreArray[count++] = scoresArray[i];
     }
     *subScoresArraySize = count;
 }
